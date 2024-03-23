@@ -34,25 +34,25 @@ function init() {
             // Call the appropriate function based on user's choice
             switch (answer.action) {
                 case 'View all departments':
-                    viewAllDepartments();
+                    viewAllDepartments(init); // Pass init function as parameter
                     break;
                 case 'Add a department':
-                    addDepartment();
+                    addDepartment(init); // Pass init function as parameter
                     break;
                 case 'View all roles':
-                    viewAllRoles();
+                    viewAllRoles(init); // Pass init function as parameter
                     break;
                 case 'Add a role':
-                    addRole();
+                    addRole(init); // Pass init function as parameter
                     break;
                 case 'View all employees':
-                    viewAllEmployees();
+                    viewAllEmployees(init); // Pass init function as parameter
                     break;
                 case 'Add an employee':
-                    addEmployee();
+                    addEmployee(init); // Pass init function as parameter
                     break;
                 case 'Update an employee role':
-                    updateEmployeeRole();
+                    updateEmployeeRole(init); // Pass init function as parameter
                     break;
                 case 'Exit':
                     console.log('Exiting application...');

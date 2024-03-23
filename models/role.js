@@ -1,22 +1,23 @@
 // role.js
-
-// Import necessary modules
 const inquirer = require('inquirer');
 const connection = require('../config/connection');
 
 // Function to view all roles
-function viewAllRoles() {
+function viewAllRoles(init) {
   const query = 'SELECT * FROM role';
-  connection.query(query, (err, res) => {
-    if (err) throw err;
-    console.table(res);
-    // After viewing all roles, return to the main menu
-    init();
-  });
+  connection.execute(query)
+    .then(([rows]) => {
+      console.table(rows);
+      // After viewing all roles, return to the main menu
+      init();
+    })
+    .catch(err => {
+      console.error('Error occurred:', err);
+    });
 }
 
 // Function to add a role
-function addRole() {
+function addRole(init) {
   // Retrieve necessary data for adding a role
   // Use inquirer to prompt the user for role information
   inquirer
@@ -52,5 +53,8 @@ function addRole() {
     });
 }
 
+// Define the init function
+function init() {}
+
 // Export functions to be used in other files
-module.exports = { viewAllRoles, addRole };
+module.exports = { viewAllRoles, addRole, init };
