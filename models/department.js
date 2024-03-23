@@ -1,22 +1,46 @@
 // department.js
 
-const mysql = require('mysql2');
+// Import necessary modules
+const inquirer = require('inquirer');
 const connection = require('../config/connection');
 
-class Department {
-    // Get all departments
-    static async getAllDepartments() {
-        const [rows] = await connection.execute('SELECT * FROM departments');
-        return rows;
-    }
-
-    // Add a new department
-    static async addDepartment(departmentName) {
-        const [result] = await connection.execute('INSERT INTO departments (name) VALUES (?)', [departmentName]);
-        return result;
-    }
-
-    // Other CRUD operations can be implemented similarly
+// Function to view all departments
+function viewAllDepartments() {
+  const query = 'SELECT * FROM department';
+  connection.query(query, (err, res) => {
+    if (err) throw err;
+    console.table(res);
+    // After viewing all departments, return to the main menu
+    init();
+  });
 }
 
-module.exports = Department;
+// Function to add a department
+function addDepartment() {
+  // Retrieve necessary data for adding a department
+  // Use inquirer to prompt the user for department information
+  inquirer
+    .prompt([
+      {
+        type: 'input',
+        name: 'name',
+        message: 'Enter the name of the new department:'
+      }
+    ])
+    .then(answer => {
+      // Add the department to the database
+      const query = 'INSERT INTO department (name) VALUES (?)';
+      connection.query(query, [answer.name], (err, res) => {
+        if (err) throw err;
+        console.log('Department added successfully!');
+        // After adding the department, return to the main menu
+        init();
+      });
+    })
+    .catch(err => {
+      console.error('Error occurred:', err);
+    });
+}
+
+// Export functions to be used in other files
+module.exports = { viewAllDepartments, addDepartment };
